@@ -202,7 +202,7 @@ DEFUN (vtysh_intf_link_aggregation,
     if(status_txn == TXN_SUCCESS || status_txn == TXN_UNCHANGED)
     {
       vty->node = LINK_AGGREGATION_NODE;
-      vty->index = lag_number;
+      vty->index = (uintptr_t)lag_number;
       return CMD_SUCCESS;
     }
     else
@@ -214,7 +214,7 @@ DEFUN (vtysh_intf_link_aggregation,
   else
   {
     vty->node = LINK_AGGREGATION_NODE;
-    vty->index = lag_number;
+    vty->index = (uintptr_t)lag_number;
     return CMD_SUCCESS;
   }
 }
@@ -450,7 +450,7 @@ DEFUN (cli_lacp_set_mode,
        "Sets an interface as LACP active\n"
        "Sets an interface as LACP passive\n")
 {
-  return lacp_set_mode((char*) vty->index, argv[0], "");
+  return lacp_set_mode((char*)((uintptr_t)vty->index), argv[0], "");
 }
 
 DEFUN (cli_lacp_set_no_mode,
@@ -462,7 +462,7 @@ DEFUN (cli_lacp_set_no_mode,
        "Sets an interface as LACP active\n"
        "Sets an interface as LACP passive\n")
 {
-  return lacp_set_mode((char*) vty->index, "off", argv[0]);
+  return lacp_set_mode((char*)((uintptr_t)vty->index), "off", argv[0]);
 }
 
 static int
@@ -525,7 +525,7 @@ DEFUN (cli_lacp_set_l2_hash,
        "The type of hash algorithm used for aggregated port (Default:l3-src-dst)\n"
        "Base the hash on l2-src-dst\n")
 {
-  return lacp_set_hash((char*) vty->index, OVSDB_LB_L2_HASH);
+  return lacp_set_hash((char*)((uintptr_t)vty->index), OVSDB_LB_L2_HASH);
 }
 
 DEFUN (cli_lacp_set_l3_hash,
@@ -534,7 +534,7 @@ DEFUN (cli_lacp_set_l3_hash,
        "The type of hash algorithm used for aggregated port (Default:l3-src-dst)\n"
        "Base the hash on l3-src-dst\n")
 {
-  return lacp_set_hash((char*) vty->index, OVSDB_LB_L3_HASH);
+  return lacp_set_hash((char*)((uintptr_t)vty->index), OVSDB_LB_L3_HASH);
 }
 
 DEFUN (cli_lacp_set_l4_hash,
@@ -543,7 +543,7 @@ DEFUN (cli_lacp_set_l4_hash,
        "The type of hash algorithm used for aggregated port (Default:l3-src-dst)\n"
        "Base the hash on l4-src-dst\n")
 {
-  return lacp_set_hash((char*) vty->index, OVSDB_LB_L4_HASH);
+  return lacp_set_hash((char*)((uintptr_t)vty->index), OVSDB_LB_L4_HASH);
 }
 
 static int
@@ -609,7 +609,7 @@ DEFUN (cli_lacp_set_fallback,
        LACP_STR
        "Enable LACP fallback mode\n")
 {
-    return lacp_set_fallback((char*) vty->index, true);
+    return lacp_set_fallback((char*)((uintptr_t)vty->index), true);
 }
 
 DEFUN (cli_lacp_set_no_fallback,
@@ -619,7 +619,7 @@ DEFUN (cli_lacp_set_no_fallback,
        LACP_STR
        "Enable LACP fallback mode\n")
 {
-    return lacp_set_fallback((char*) vty->index, false);
+    return lacp_set_fallback((char*)((uintptr_t)vty->index), false);
 }
 
 static int
@@ -691,9 +691,9 @@ DEFUN (cli_lacp_set_heartbeat_rate,
         heartbeats are requested at the rate of one per second\n")
 {
   if (strcmp(argv[0],PORT_OTHER_CONFIG_LACP_TIME_FAST) == 0)
-      return lacp_set_heartbeat_rate((char*) vty->index, PORT_OTHER_CONFIG_LACP_TIME_FAST);
+      return lacp_set_heartbeat_rate((char*)((uintptr_t)vty->index), PORT_OTHER_CONFIG_LACP_TIME_FAST);
   else
-      return lacp_set_heartbeat_rate((char*) vty->index, PORT_OTHER_CONFIG_LACP_TIME_SLOW);
+      return lacp_set_heartbeat_rate((char*)((uintptr_t)vty->index), PORT_OTHER_CONFIG_LACP_TIME_SLOW);
 }
 DEFUN (cli_lacp_set_no_heartbeat_rate,
        lacp_set_no_heartbeat_rate_cmd,
@@ -702,7 +702,7 @@ DEFUN (cli_lacp_set_no_heartbeat_rate,
        LACP_STR
        "Set LACP heartbeat request time. Default is slow which is once every 30 seconds\n")
 {
-  return lacp_set_heartbeat_rate((char*) vty->index, PORT_OTHER_CONFIG_LACP_TIME_SLOW);
+  return lacp_set_heartbeat_rate((char*)((uintptr_t)vty->index), PORT_OTHER_CONFIG_LACP_TIME_SLOW);
 }
 
 DEFUN (cli_lacp_set_no_heartbeat_rate_fast,
@@ -713,7 +713,7 @@ DEFUN (cli_lacp_set_no_heartbeat_rate_fast,
        "Set LACP heartbeat request time. Default is slow which is once every 30 seconds\n"
        "LACP heartbeats are requested at the rate of one per second\n")
 {
-  return lacp_set_heartbeat_rate((char*) vty->index, PORT_OTHER_CONFIG_LACP_TIME_SLOW);
+  return lacp_set_heartbeat_rate((char*)((uintptr_t)vty->index), PORT_OTHER_CONFIG_LACP_TIME_SLOW);
 }
 
 
@@ -856,7 +856,7 @@ DEFUN (cli_lacp_intf_set_port_id,
       "Set port ID used in LACP negotiation\n."
       "The range is 1 to 65535\n")
 {
-  return lacp_intf_set_port_id((char*)vty->index, argv[0]);
+  return lacp_intf_set_port_id((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 /*****************************************************************************
@@ -929,7 +929,7 @@ DEFUN (cli_lacp_intf_set_no_port_id,
        "Set port ID used in LACP negotiation\n"
        "The range is 1 to 65535\n")
 {
-    return lacp_intf_set_no_port_id((char*)vty->index, argv[0]);
+    return lacp_intf_set_no_port_id((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 DEFUN (cli_lacp_intf_set_no_port_id_short,
@@ -939,7 +939,7 @@ DEFUN (cli_lacp_intf_set_no_port_id_short,
        "Set port ID used in LACP negotiation\n"
        "The range is 1 to 65535\n")
 {
-    return lacp_intf_set_no_port_id((char*)vty->index, NULL);
+    return lacp_intf_set_no_port_id((char*)((uintptr_t)vty->index), NULL);
 }
 
 static int
@@ -998,7 +998,7 @@ DEFUN (cli_lacp_intf_set_port_priority,
       "Set port priority is used in LACP negotiation\n"
       "The range is 1 to 65535\n")
 {
-  return lacp_intf_set_port_priority((char*)vty->index, argv[0]);
+  return lacp_intf_set_port_priority((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 /*****************************************************************************
@@ -1073,7 +1073,7 @@ DEFUN (cli_lacp_intf_set_no_port_priority,
        "Set port priority is used in LACP negotiation\n"
        "The range is 1 to 65535\n")
 {
-    return lacp_intf_set_no_port_priority((char*)vty->index, argv[0]);
+    return lacp_intf_set_no_port_priority((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 DEFUN (cli_lacp_intf_set_no_port_priority_short,
@@ -1083,7 +1083,7 @@ DEFUN (cli_lacp_intf_set_no_port_priority_short,
        "Set port priority is used in LACP negotiation\n"
        "The range is 1 to 65535\n")
 {
-    return lacp_intf_set_no_port_priority((char*)vty->index, NULL);
+    return lacp_intf_set_no_port_priority((char*)((uintptr_t)vty->index), NULL);
 }
 
 
@@ -1332,7 +1332,7 @@ DEFUN (cli_lacp_add_intf_to_lag,
       "Add the current interface to link aggregation\n"
       "LAG number ranges from 1 to 2000\n")
 {
-  return lacp_add_intf_to_lag((char*)vty->index, argv[0]);
+  return lacp_add_intf_to_lag((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 static int
@@ -1445,7 +1445,7 @@ DEFUN (cli_lacp_remove_intf_from_lag,
       "Add the current interface to link aggregation\n"
       "LAG number ranges from 1 to 2000\n")
 {
-  return lacp_remove_intf_from_lag((char*)vty->index, argv[0]);
+  return lacp_remove_intf_from_lag((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 static int
@@ -2128,7 +2128,7 @@ DEFUN(cli_lag_routing,
     "routing",
     "Configure LAG as L3\n")
 {
-    return lag_routing((char*) vty->index);
+    return lag_routing((char*)((uintptr_t)vty->index));
 }
 
 DEFUN(cli_lag_no_routing,
@@ -2137,7 +2137,7 @@ DEFUN(cli_lag_no_routing,
     NO_STR
     "Configure LAG as L3\n")
 {
-    return lag_no_routing((char*) vty->index);
+    return lag_no_routing((char*)((uintptr_t)vty->index));
 }
 
 /*
@@ -2165,7 +2165,7 @@ DEFUN (cli_lag_shutdown,
     OVSREC_PORT_FOR_EACH(port_row, idl) {
 
         if(strncmp(port_row->name,
-                   (char*)vty->index,
+                   (char*)((uintptr_t)vty->index),
                    strlen(port_row->name)) == 0) {
 
             if(vty_flags & CMD_FLAG_NO_CMD) {
@@ -2305,7 +2305,7 @@ DEFUN (cli_lag_intf_config_ip4,
         "Set IP address\n"
         "LAG Interface IP address\n")
 {
-    return lag_intf_config_ip((char*) vty->index, argv[0],
+    return lag_intf_config_ip((char*)((uintptr_t)vty->index), argv[0],
       (argv[1] != NULL) ? true : false);
 }
 
@@ -2321,7 +2321,7 @@ DEFUN (cli_lag_intf_del_ip4,
     struct ovsdb_idl_txn *status_txn = NULL;
     enum ovsdb_idl_txn_status status;
     bool port_found = false;
-    const char *if_name = (char*)vty->index;
+    const char *if_name = (char*)((uintptr_t)vty->index);
     char ip4[IP_ADDRESS_LENGTH];
     char **secondary_ip4_addresses;
     size_t i, n;
@@ -2433,7 +2433,7 @@ DEFUN (cli_lag_intf_config_ipv6,
     struct ovsdb_idl_txn *status_txn = NULL;
     enum ovsdb_idl_txn_status status;
     bool secondary = false;
-    const char *if_name = (char*) vty->index;
+    const char *if_name = (char*)((uintptr_t)vty->index);
     const char *ipv6 = argv[0];
     char **secondary_ipv6_addresses;
     size_t i;
@@ -2509,7 +2509,7 @@ DEFUN (cli_lag_intf_del_ipv6,
     const struct ovsrec_port *port_row = NULL;
     struct ovsdb_idl_txn *status_txn = NULL;
     enum ovsdb_idl_txn_status status;
-    const char *if_name = (char*) vty->index;
+    const char *if_name = (char*)((uintptr_t)vty->index);
     const char *ipv6 = NULL;
     char **secondary_ipv6_addresses;
     size_t i, n;
@@ -2675,7 +2675,7 @@ DEFUN (cli_lag_intf_del_ipv6,
 //    "Default LACP fallback mode\n"
 //    "Sets LACP fallback mode to all_active\n")
 //{
-//    return lacp_set_fallback_mode((char*) vty->index, argv[0]);
+//    return lacp_set_fallback_mode((char*)((uintptr_t)vty->index), argv[0]);
 //}
 //
 //DEFUN(cli_lacp_set_no_fallback_mode,
@@ -2684,7 +2684,7 @@ DEFUN (cli_lag_intf_del_ipv6,
 //    LACP_STR
 //    "Set LACP fallback mode to default value which is priority\n")
 //{
-//    return lacp_set_fallback_mode((char*) vty->index,
+//    return lacp_set_fallback_mode((char*)((uintptr_t)vty->index),
 //                                  PORT_OTHER_CONFIG_LACP_FALLBACK_MODE_PRIORITY);
 //}
 
@@ -2750,7 +2750,7 @@ DEFUN(cli_lacp_set_fallback_timeout,
     "Set LACP fallback timeout (time in seconds during which fallback remains active)\n"
     "The range is 1 to 900\n")
 {
-    return lacp_set_fallback_timeout((char*) vty->index, argv[0]);
+    return lacp_set_fallback_timeout((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 
@@ -2826,7 +2826,7 @@ DEFUN(cli_lacp_set_no_fallback_timeout,
     LACP_STR
     "Set LACP fallback timeout to default value which is 0\n")
 {
-    return lacp_set_no_fallback_timeout((char*) vty->index, argv[0]);
+    return lacp_set_no_fallback_timeout((char*)((uintptr_t)vty->index), argv[0]);
 }
 
 
