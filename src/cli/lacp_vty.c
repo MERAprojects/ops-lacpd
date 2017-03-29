@@ -219,14 +219,6 @@ DEFUN (vtysh_intf_link_aggregation,
   }
 }
 
-DEFUN (vtysh_exit_lac_interface,
-             vtysh_exit_lacp_interface_cmd,
-             "exit",
-             "Exit current mode and down to previous mode\n")
-{
-  return vtysh_exit (vty);
-}
-
 static int
 delete_lag(const char *lag_name)
 {
@@ -2889,7 +2881,7 @@ void cli_post_init(void)
   install_element (LINK_AGGREGATION_NODE, &lacp_set_heartbeat_rate_cmd);
   install_element (LINK_AGGREGATION_NODE, &lacp_set_no_heartbeat_rate_cmd);
   install_element (LINK_AGGREGATION_NODE, &lacp_set_no_heartbeat_rate_fast_cmd);
-  install_element (LINK_AGGREGATION_NODE, &vtysh_exit_lacp_interface_cmd);
+  install_element (LINK_AGGREGATION_NODE, &vtysh_exit_interface_cmd);
   install_element (LINK_AGGREGATION_NODE, &vtysh_end_all_cmd);
   install_element (LINK_AGGREGATION_NODE, &cli_lag_shutdown_cmd);
   install_element (LINK_AGGREGATION_NODE, &no_cli_lag_shutdown_cmd);
